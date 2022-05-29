@@ -1,16 +1,19 @@
 class Solution:
     def maxProduct(self, words: List[str]) -> int:
         """
-        
+        using the bits as a on off signal to know if the letter is present or not
         """
-        word = {}
-        for i in range(len(words)):
-            word[i] = set(list(words[i]))
+        letters = []
         ans = 0
+        
+        for word in words:
+            temp = 0
+            for ch in word:
+                temp |= 1 << (ord(ch) - ord('a'))
+            letters.append(temp)
+        
         for i in range(len(words)):
             for j in range(len(words)):
-                intersect = word[i].intersection(word[j])
-                if not intersect:
-                    ans = max(len(words[i]) * len(words[j]), ans)
-    
+                if letters[i] & letters[j] == 0:
+                    ans = max(ans, len(words[i]) * len(words[j]))
         return ans
