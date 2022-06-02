@@ -3,10 +3,9 @@ class Solution:
         """
         
         """
-        ans = [ [] for _ in range(len(matrix[0])) ]
+        matrix = list(zip(*matrix))
         
-        for i in range(len(matrix)):
-            for j in range(len(matrix[i])):
-                ans[j].append(matrix[i][j])
-
-        return ans
+        for row in range(len(matrix)):
+            matrix[row] = list(matrix[row])
+        
+        return matrix
