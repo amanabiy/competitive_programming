@@ -3,14 +3,24 @@ class Solution:
         """
         target = 22
         nums = [2,7,11,15]
-        Time: (n^2)
-        space: O(1)
-        
+        dictionary = {
+            20: 0,
+            15: 1,
+            11: 2,
+            
+            
+        }
+        """
+        """
+        Time: O(n)
+        Space: O(n)
         """
         
-        for i in range(len(num)):
-            for j in range(i+1, len(num)):
-                if num[i] + num[j] == target:
-                    return [i, j]
-                
+        sumData = {}
+        
+        for i, n in enumerate(num):
+            if n in sumData:
+                return [i, sumData[n]]
+            sumData[target - n] = i
+        
         return [-1, -1]
