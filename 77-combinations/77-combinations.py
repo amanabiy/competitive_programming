@@ -6,12 +6,12 @@ class Solution:
             nonlocal k, n
 
             if len(collected) == k:
-                ans.append(collected)
+                ans.append(collected[::])
             
             elif num > 0 and len(collected) < k:
                 for i in range(num, 0, -1):
                     collected.append(i)
-                    dfs(i-1, collected[::])
+                    dfs(i-1, collected)
                     collected.pop()
 
         dfs(n, [])
