@@ -1,31 +1,31 @@
 class Solution:
-    def searchRange(self, nums: List[int], target: int) -> List[int]:
+    def searchRange(self, numss: List[int], target: int) -> List[int]:
         
-        def  binarySearch(arr, target, isStart = True):
+        def binarySearch(nums, target, start):
             left = 0
-            right = len(arr) - 1
-            lastFoundIndex = -1
+            right = len(nums) - 1
+            position = -1
             
             while left <= right:
                 mid = left + (right - left) // 2
-    
-                if arr[mid] == target:
-                    lastFoundIndex = mid
-                    if isStart:
+                
+                if nums[mid] == target:
+                    position = mid
+                    
+                    if start:
                         right = mid - 1
                     else:
                         left = mid + 1
-                    continue
-                
-                if arr[mid] < target:
+                    
+                elif nums[mid] < target:
                     left = mid + 1
                 else:
-                    right = mid - 1              
-                    
-            return lastFoundIndex
+                    right = mid - 1
+            
+            return position
+    
+        start = binarySearch(numss, target, True)
+        end = binarySearch(numss, target, False)
+    
 
-
-        starts = binarySearch(nums, target, True)
-        ends = binarySearch(nums, target, False)
-        
-        return [starts, ends]
+        return [start, end]
