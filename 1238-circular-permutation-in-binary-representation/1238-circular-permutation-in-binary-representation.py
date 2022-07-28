@@ -14,12 +14,5 @@ class Solution:
         000 001  011 010 110 111 101 100
     
         """
-        ans = deque()
-        for i in range(1 << n):
-            ans.append(i ^ (i >> 1))
         
-        while ans[0] != start:
-            popped = ans.popleft()
-            ans.append(popped)
-        
-        return ans
+        return [ start ^ (i ^ (i >> 1)) for i in range(1 << n) ]
