@@ -9,11 +9,19 @@ class Solution:
         
         n = len(nums)
         
-        if len(nums) >= 2 and nums[0] > nums[1]:
-            return 0
+        left = 0
+        right = n - 1
         
-        for i in range(n - 1):
-            if nums[i] > nums[i+1]:
-                return i
-        
-        return n - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            
+            
+            if 0 < mid < n - 1 and nums[mid - 1] < nums[mid] and nums[mid + 1] < nums[mid]:
+                return mid
+            
+            if mid < n- 1 and nums[mid] < nums[mid + 1]:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        return left
