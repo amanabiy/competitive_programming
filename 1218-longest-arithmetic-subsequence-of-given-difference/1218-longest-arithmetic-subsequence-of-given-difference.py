@@ -9,6 +9,9 @@ class Solution:
         """
         memo = defaultdict(int)
         for i in range(len(arr)):
-            memo[arr[i]] = max(memo[arr[i] - difference] + 1, memo[arr[i]])
+            if arr[i] - difference in memo:
+                memo[arr[i]] = max(memo[arr[i] - difference] + 1, memo[arr[i]])
+            else:
+                memo[arr[i]] = 1
 
         return max(memo.values())
