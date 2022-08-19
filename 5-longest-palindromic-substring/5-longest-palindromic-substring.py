@@ -13,7 +13,6 @@ class Solution:
                 ans += 1
                 i -= 1
                 j += 1
-            print(s[i+1:j], i, j)
             return s[i+1:j]
         
         for i in range(len(s) - 1):
