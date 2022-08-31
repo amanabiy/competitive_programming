@@ -1,6 +1,6 @@
 class Solution:
     def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
-        ans = 0
+        ans = 1
         indegree = [ [ 0 for i in range(len(matrix[0])) ] for _ in range(len(matrix))]
         directions = [(0, 1), (1, 0), (-1, 0), (0, -1)]
         isValid = lambda r, c: 0 <= r < len(matrix) and 0 <= c < len(matrix[r])
@@ -28,13 +28,12 @@ class Solution:
                 indegree[newR][newC] -= 1                    
                 if matrix[newR][newC] > matrix[row][col]:
                     maxLength[newR][newC] = max(maxLength[newR][newC], 1 + maxLength[row][col])
+                    if maxLength[newR][newC] > ans:
+                        ans = maxLength[newR][newC]
 
                 if indegree[newR][newC] == 0:
                     queue.append([newR, newC])
 
-        for i in range(len(matrix)):
-            for j in range(len(matrix[i])):
-                ans = max(ans, maxLength[i][j])
 
         return ans
         
