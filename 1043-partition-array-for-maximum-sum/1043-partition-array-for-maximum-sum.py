@@ -15,13 +15,14 @@ class Solution:
         
         """
         
-        memo = {}
+        memo = [-1 for i in range(len(arr))]
 
         def dfs(i):
             if i >= len(arr):
                 return 0
-            if i in memo:
+            if memo[i] != -1:
                 return memo[i]
+            
             ans = arr[i]
 
             for j in range(i + 1, min(i + k + 1, len(arr) + 1)):
