@@ -15,21 +15,14 @@ class Solution:
         
         """
         
-        memo = [-1 for i in range(len(arr))]
+        memo = [0] * (len(arr) + 1)
 
-        def dfs(i):
-            if i >= len(arr):
-                return 0
-            if memo[i] != -1:
-                return memo[i]
+        for i in range(1, len(arr) + 1):
+            for j in range(1, k + 1):
+                if i - j < 0:
+                    break
+                sliced = arr[i - j: i] 
+                curr_max = max(sliced)
+                memo[i] = max(memo[i], memo[i - j] + curr_max * j)
             
-            ans = arr[i]
-
-            for j in range(i + 1, min(i + k + 1, len(arr) + 1)):
-                arrs = (max(arr[i:j]) * len(arr[i:j])) + dfs(j) 
-                ans = max(ans, arrs)
-
-            memo[i] = ans
-            return memo[i]
-            
-        return dfs(0)
+        return memo[-1]
