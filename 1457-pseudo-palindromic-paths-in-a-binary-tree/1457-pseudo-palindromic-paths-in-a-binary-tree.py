@@ -13,7 +13,6 @@ class Solution:
             if not node.left and not node.right:
                 count = 0
                 ret = 1
-                print(values)
                 for key in values:
                     if values[key] % 2 == 1:
                         count += 1
