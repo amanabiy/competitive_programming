@@ -1,17 +1,24 @@
-class Solution {
-public:
-    int numSquares(int n) {
-        vector<int>coins;
-        for (int i = 1; i * i <= n; i++) {
-            coins.push_back(i*i);
-        }
-        vector<int>dp(n + 1,1e9);
-        dp[0] = 0;
-        for (int i = 0; i <=n ;i++) {
-            for (auto c: coins)
-                if (i >= c)
-                    dp[i] = min(dp[i], dp[i - c] + 1);
-        }
-        return dp[n];
-    }
-};
+from queue import Queue
+
+class Solution:
+    """
+    Queue based solution
+    """
+    def numSquares(self, n: int) -> int:
+        queue = Queue()
+        visited = set()
+        depth = -1
+
+        queue.put(n)
+        visited.add(n)
+        while not queue.empty():
+            depth += 1
+            for _ in range(0, queue.qsize()):
+                # pop the element and push 
+                elem = queue.get()
+                if elem == 0: 
+                    return depth
+                for i in range(1, math.floor(math.sqrt(elem))+1):
+                    if elem - i*i not in visited:
+                        queue.put(elem - i*i)
+                        visited.add(elem-i*i)
