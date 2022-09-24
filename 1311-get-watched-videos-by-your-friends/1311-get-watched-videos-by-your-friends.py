@@ -4,7 +4,8 @@ class Solution:
         bfs starting from the id until you get to the level you  want and then get all           the movies and sort them with frequency
         """
         queue = deque([id])
-        visited = set([id])
+        visited = [0] * len(friends)
+        visited[id] = 1
         last_movies = defaultdict(int)
         
         while queue and level > 0:
@@ -14,9 +15,9 @@ class Solution:
                 person = queue.popleft()
 
                 for friend in friends[person]:
-                    if friend not in visited:
+                    if not visited[friend]:
                         queue.append(friend)
-                        visited.add(friend)
+                        visited[friend] = 1
             
             level -= 1
         
