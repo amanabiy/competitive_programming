@@ -26,7 +26,7 @@ class Solution:
         currTime = 0
         usedRoom = defaultdict(int)
         meetings.sort()
-        print(meetings)
+        # print(meetings)
         
         for i in range(len(meetings)):
             start, end = meetings[i]
