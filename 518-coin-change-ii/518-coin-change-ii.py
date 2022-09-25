@@ -3,12 +3,9 @@ class Solution:
         """
         """
         dp = [0] * (amount + 1)
-        if amount == 0:
-            return 1
+        dp[0] = 1
         
         for coin in coins:
-            if coin < amount + 1:
-                dp[coin] += 1
             for j in range(coin, amount + 1):
                 dp[j] += dp[j - coin]
         
