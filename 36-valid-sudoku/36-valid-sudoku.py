@@ -24,7 +24,7 @@ class Solution:
         """
         rows = defaultdict(set)
         cols = defaultdict(set)
-        box = defaultdict(set)
+        box = [ [set() for _ in range(3)] for _ in range(3) ]
         
         for i in range(len(board)):
             for j in range(len(board)):
@@ -34,14 +34,13 @@ class Solution:
                     
                 if  board[i][j] not in rows[i] \
                 and board[i][j] not in cols[j] \
-                and board[i][j] not in box[(row, col)]:
+                and board[i][j] not in box[row][col]:
                 
                     rows[i].add(board[i][j])
                     cols[j].add(board[i][j])
-                    box[(row, col)].add(board[i][j])
+                    box[row][col].add(board[i][j])
 
                 else:
-                    print(i, j, board[i][j])
                     return False
 
         return True
