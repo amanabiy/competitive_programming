@@ -3,23 +3,28 @@ class Solution:
         """
         either the number can be positive or negative at one point:
         therefore If I can know what the value of it when it negative I can use it
+         -3   -2  -1   0   1   2   3
+          0    1   2   3   4   5   6 
+          
+          
+        
         """
-        memo = {}
+        total = sum(nums)
         
-        def dfs(i, sums):
-            if i == len(nums):
-                if sums == target:
-                    return 1
-                return 0
-        
-            if (i, sums) in memo:
-                return memo[(i, sums)]
-            
-            pos = dfs(i+1, sums + nums[i])
-            neg = dfs(i+1, sums - nums[i])
+        if abs(target) > total:
+            return 0
 
-            memo[(i, sums)] = pos + neg
-            
-            return memo[(i, sums)]
+        dp = [ [ 0 for i in range(total * 2 + 1)] for _ in range(len(nums))]
+        dp[0][total + nums[0]] = 1
+        dp[0][total - nums[0]] += 1
+
+        for i in range(1, len(nums)):
+            for j in range(-total, total+1):
+                index = j + total
+                if index + nums[i] <= total * 2:
+                    dp[i][index + nums[i]] += dp[i - 1][index]
+                if index - nums[i] >= 0:
+                    dp[i][index - nums[i]] += dp[i - 1][index]
+        # print(dp)
         
-        return dfs(0, 0)
+        return dp[-1][total - target]
