@@ -1,6 +1,5 @@
 class Solution:
     def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
-        visited = set()
         m, s = len(grid), len(grid[0])
         queue = deque()
         directions = [(1,1), (1,-1), (-1,1), (-1,-1),(-1,0), (0,-1), (1,0), (0, 1)]
@@ -10,7 +9,7 @@ class Solution:
 
         if grid[0][0] == 0:
             queue.append((0,0))
-            visited.add((0,0))
+            grid[0][0] = 1
             
         while queue:
             n = len(queue)
@@ -21,9 +20,10 @@ class Solution:
                     break
                 for x, y in directions:
                     r, c = node[0] + x, node[1] + y
-                    if isValid(r,c) and (r, c) not in visited and grid[r][c] == 0:
+                    if isValid(r,c) and grid[r][c] == 0:
                         queue.append((r, c))
-                        visited.add((r, c))
+                        grid[r][c] = 1
+
             distance += 1
         
         return ans
