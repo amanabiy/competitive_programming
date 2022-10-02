@@ -7,34 +7,48 @@ class Solution:
          1 2 3 4 5 6 7   Faces: 1 2 3 4 5 6     n = 2  target = 1 - 1
                                                        target = 2 -> 1 + 1 and 2
                                                        target = 3 -> 1 + 2 and 2 + 1
-           0  1   2   3   4   5   6
-        0  0  0   0   0   0   0   0
-        1  0  1   1   1   1   1   1
-        2  0  2  
+        inf = -inf
+           0     1   2    3   4   5   6   7
+        0  0    inf inf inf  inf inf inf inf
+        1  inf   1   1    1   1   1   1   inf
+        2  inf   1   1   
         
-        dp[i] = 
+        1 + 1
+        2 + 0
         
-        get -> 1 (target - get) = lookup
-                     2 - 1 = 1 -> 
-       1 1 1 1 1 1 1 0
-       2 1 2 
+        
+        
+        roll - 1 -> 7 - 1 = 6
+        roll - 1 -> 2 - 1 = 1
+        I can reach 1 only in one way
+        I can reach 2 for each die I will check the previous sum that would allow me to reach the current sum
+        curr - rolledDie = previousSum
+        if I can get the the number of ways I could reach previousSum I can easliy get the number of ways I could reach that sum if I rolled that dice so I can add it to the number of ways I can reach currently
+        
+        1 -> add one on zero or take the max way I could reach one)
+        2 -> add one from the previous roll and one from the current roll)
+        3 -> add one from the previous two and 2 from current roll, or add one from the previous 2 and 1 from the current two
+                
+                prev + curr
+        4 -> max(1 + 3, 3 + 1, 2 + 2) -> add the number of ways and take maximum
+
        
         """
         
-        memo = {}
-        def dfs(n, k, collected):
-            if n == 0 or k == 0:
-                return 1 if collected == target else 0
-            
-            if (n, collected) in memo:
-                return memo[(n, collected)]
-            
-            take = 0
-            
-            for i in range(1, k + 1):
-                take += dfs(n - 1, k, collected + i)
-            
-            memo[(n, collected)] = take
-            return take % (10 ** 9 + 7)
+        dp = [ [0 for _ in range(target + 1)] for _ in range(n + 1) ]
+        dp[0][0] = 1
+        # print(dp)
         
-        return dfs(n, k, 0)
+        for trial in range (1, n + 1):
+            for num in range (1, target + 1):
+                
+                # calculate from which previous some to inherit from
+                for face in range(1, k + 1):
+                    prev = num - face
+
+                    # look it up in the previous and add one and take the maximum
+                    if prev >= 0:
+                        dp[trial][num] += dp[trial - 1][prev]
+
+        return dp[-1][-1] % (10 ** 9 + 7)
+                
