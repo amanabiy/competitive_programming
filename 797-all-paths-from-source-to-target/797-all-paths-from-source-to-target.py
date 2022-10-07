@@ -3,18 +3,17 @@ class Solution:
         """
         
         """
-        queue = deque([[[0], 0]])
         ans = []
         
-        while queue:
-            path, node = queue.popleft()
-
-            if node == len(graph) - 1:
-                ans.append(path[::])
-                continue
+        def dfs(node, collected):
+            if collected[-1] == len(graph) - 1:
+                ans.append(collected[::])
+                return
+            # print(node, collected)
+            for nex in graph[node]:
+                collected.append(nex)
+                dfs(nex, collected)
+                collected.pop()
             
-            for neigh in graph[node]:
-                queue.append([path + [neigh], neigh])
-        
+        dfs(0, [0])
         return ans
-            
