@@ -1,25 +1,34 @@
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
+        """
+        collected -> [ "here" ]
+        I will only add it to collected if it is valid ip address other wise I will just try to expand and add the next one
         
-        
-        def isValidIP(ip):
-            if not ip:
-                return False
-            if len(ip) > 1 and ip[0] == "0":
-                return False
-            if int(ip) > 255 or int(ip) < 0:
-                return False
-            return True
-        
+        """
         ans = set()
         
-        for i in range(0, 4):
-            for j in range(i + 1, i + 4):
-                for k in range(j + 1, j + 4):
-                    for y in range(k + 1, k + 4):
-                        a, b, c, d = s[:i], s[i:j], s[j:k], s[k:y]
-                        total_len = len(a) + len(b) + len(c) + len(d) == len(s)
-                        if total_len and isValidIP(a) and isValidIP(b) and isValidIP(c) and isValidIP(d):
-                            ans.add('.'.join([a, b, c, d]))
+        def isValidIP(ip):
+            if not ip or (len(ip) > 1 and ip[0] == "0"):
+                return False
+            return 0 <= int(ip) <= 255
         
+        def backtrack(index, collected):
+            if len(collected) == 4:
+                ipAddress = '.'.join(collected)
+                if len(ipAddress) == len(s) + 3:
+                    ans.add(ipAddress)
+                return
+
+            for i in range(index, index + 3):
+                ip = s[index: i + 1]
+                if isValidIP(ip):
+                    collected.append(ip)
+                    backtrack(i + 1, collected)
+                    collected.pop()
+
+        backtrack(0, [])
+
         return ans
+            
+        
+        
