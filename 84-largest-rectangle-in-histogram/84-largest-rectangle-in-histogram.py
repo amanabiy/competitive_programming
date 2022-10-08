@@ -17,7 +17,7 @@ class Solution:
         heights.append(float('-inf'))
         
         for i in range(len(heights)):
-            while stack and heights[stack[-1]] >  heights[i]:
+            while stack and heights[stack[-1]] >=  heights[i]:
                 popped = stack.pop()
                 lastIndex = stack[-1] if stack else -1
                 leftArea = (popped - lastIndex) * heights[popped]
