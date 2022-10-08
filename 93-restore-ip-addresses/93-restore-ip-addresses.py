@@ -18,9 +18,8 @@ class Solution:
                 for k in range(j + 1, j + 4):
                     for y in range(k + 1, k + 4):
                         a, b, c, d = s[:i], s[i:j], s[j:k], s[k:y]
-                        if isValidIP(a) and isValidIP(b) and isValidIP(c) and isValidIP(d):
-                            v = '.'.join([a, b, c, d])
-                            if len(v) == len(s) + 3:
-                                ans.add(v)
+                        total_len = len(a) + len(b) + len(c) + len(d) == len(s)
+                        if total_len and isValidIP(a) and isValidIP(b) and isValidIP(c) and isValidIP(d):
+                            ans.add('.'.join([a, b, c, d]))
         
         return ans
