@@ -21,11 +21,9 @@ class Solution:
 
             for _ in range(len(queue)):
                 node, prevColor, travel = queue.popleft()
-                if node != 0:
-                    if ans[node] == -1:
-                        ans[node] = travel
-                    else:
-                        ans[node] = min(ans[node], travel)
+
+                if ans[node] == -1:
+                    ans[node] = travel
             
                 if prevColor != 'R':
                     for child in graph[node][0]:
