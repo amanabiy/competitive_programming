@@ -9,8 +9,7 @@ class Trie:
            
     def insert(self, word):
         current = self.root
-        
-        word = word.split('/')[1:]
+        word = word.split('/')
         for char in word:
             if char not in current.children:
                 current.children[char] = TrieNode()
@@ -23,7 +22,7 @@ class Trie:
             # if not node.children:
             #     return
             if node.isWord:
-                ans.append("/"+"/".join(strs))
+                ans.append("/".join(strs))
             else:
                 for key in node.children:
                     dfs(node.children[key], strs+[key])
