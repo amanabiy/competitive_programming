@@ -12,11 +12,11 @@ class Solution:
             if not node:
                 return False
             
-            if k - node.val in seen and k - node.val != node.val:
+            if k - node.val in seen:
                 return True
+    
             seen.add(node.val)
             
             return dfs(node.left) or dfs(node.right)
         
-        dfs(root)
         return dfs(root)
