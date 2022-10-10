@@ -4,22 +4,13 @@ class Solution:
         if len(palindrome) == 1:
             return ""
 
-        left = 0
-        replaced = 0
-        letter = 'a'
+        ans = list(palindrome)
+
+        for i in range(len(palindrome)):
+            if ans[i] != 'a' and ans[:i] != ans[i+1:]:
+                ans[i] = 'a'
+                return ''.join(ans)
         
-        while left < len(palindrome) // 2 or replaced == 0:
-            if replaced == 0 and left == len(palindrome) // 2:
-                left = 0
-                letter = chr(ord(letter) + 1)
-            if palindrome[left] < letter:
-                palindrome = palindrome[: len(palindrome) - left - 1] + letter + \
-                             palindrome[len(palindrome) - left:]
-                break
-            if palindrome[left] != letter:
-                palindrome = palindrome[:left] + letter + palindrome[left+1:]
-                break
-            left += 1
-        
-        return palindrome
+        ans[-1] = 'b'
+        return ''.join(ans)
             
