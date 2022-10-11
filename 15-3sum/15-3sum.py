@@ -1,31 +1,30 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        ans = []
-        calculated = set()
+        """
+        [-1,0,1,2,-1,-4]
+        [-4,-1,-1,0,1,2] target = 0
+        seen {
+            -4, -1, 0, 
+        }
+        -4 -> 4
+        -1
+        -1 + -1 -> 2
+        -1 + 0 -> 0 - -1 -> 1
+        -1 + 1 -> 0 -> 0 + 0
+        
+        []
+        [-1, 0, 1]
+        """
+        ans = set()
+        n = len(nums)
         nums.sort()
+
+        for i in range(n):
+            seen = set()
+            for j in range(i + 1, n):
+                diff =  0 - (nums[i] + nums[j])
+                if diff in seen:
+                    ans.add((nums[i], diff, nums[j]))
+                seen.add(nums[j])        
         
-        for i in range(len(nums)):
-            left = i + 1
-            right = len(nums) - 1
-
-            
-            if nums[i] not in calculated:
-                
-                while left < right:
-                    three_sum = nums[left] + nums[right] + nums[i]
-                    
-                    if three_sum == 0 and (nums[left], nums[right]) not in calculated:
-                        ans.append([nums[i], nums[left], nums[right]])
-                        calculated.add((nums[left], nums[right]))
-                        left += 1
-                        right -= 1
-                
-                    elif three_sum <= 0:
-                        left += 1
-                    else:
-                        right -= 1
-        
-
-            calculated.add(nums[i])
-
-        return ans
+        return ans        
