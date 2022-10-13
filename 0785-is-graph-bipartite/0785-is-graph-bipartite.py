@@ -1,29 +1,26 @@
 class Solution:
     def isBipartite(self, graph: List[List[int]]) -> bool:
         color = {}
-        
-        def bfs(node):
-            queue = deque([node])
-            color = {node: True}
-            
-            while queue:
-                n = queue.popleft()
-                # check 
-                for child in graph[n]:
-                    if child in color:
-                        if color[child] == color[n]:
-                            return False
-                    else:
-                        childColor = not color[n]
-                        color[child] = childColor
-                        queue.append(child)
-            
-            return True
 
         
+        def dfs(node):
+            
+            for child in graph[node]:
+                if child in color:
+                    if color[child] == color[node]:
+                        return False
+                else:
+                    color[child] = not color[node]
+                    if not dfs(child):
+                        return False
+            
+            return True
+                    
+                
         for i in range(len(graph)):
             if i not in color:
-                if not bfs(i):
+                color[i] = True
+                if not dfs(i):
                     return False
         
         return True
