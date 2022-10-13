@@ -1,13 +1,6 @@
 class Solution:
-    def isBipartite(self, AList: List[List[int]]) -> bool:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
         color = {}
-
-        graph = defaultdict(list)
-        
-        for i in range(len(AList)):
-            for edge in AList[i]:
-                graph[i].append(edge)
-                graph[edge].append(i)
         
         def bfs(node):
             queue = deque([node])
@@ -28,7 +21,7 @@ class Solution:
             return True
 
         
-        for i in range(len(AList)):
+        for i in range(len(graph)):
             if i not in color:
                 if not bfs(i):
                     return False
