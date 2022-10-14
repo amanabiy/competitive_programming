@@ -1,24 +1,33 @@
 class Solution:
     def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
-        """
-        """
-        graph = defaultdict(list)
-        indegree = defaultdict(int)
-        queue = deque(supplies)
+        supplies = set(supplies)
+        foods = defaultdict(list)
+        visited = defaultdict(int)
         ans = []
-        
-        # build graph and count indegree
-        for i in range(len(ingredients)):
-            for j in range(len(ingredients[i])):
-                graph[ingredients[i][j]].append(recipes[i])
-                indegree[recipes[i]] += 1
-        
-        while queue:
-            sup = queue.popleft()
-            for rec in graph[sup]:
-                indegree[rec] -= 1
-                if indegree[rec] == 0:
-                    queue.append(rec)   
-                    ans.append(rec)
 
+        for i in range(len(recipes)):
+            foods[recipes[i]] = ingredients[i]
+        receeep = set(recipes)
+        def dfs(node):
+            if visited[node] == 1:
+                return True
+            if visited[node] == 2:
+                return False
+            if node not in supplies and not foods[node]:
+                return True
+            visited[node] = 1
+            for ingredient in foods[node]:
+                if dfs(ingredient):
+                    return True
+
+            visited[node] = 2
+            if node in receeep:
+                ans.append(node)
+            return False
+        
+        
+        for i in range(len(recipes)):
+            if not visited[recipes[i]]:
+                dfs(recipes[i])
+            
         return ans
