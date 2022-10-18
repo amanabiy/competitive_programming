@@ -18,16 +18,14 @@ class Solution:
         
         left = 0
         numCitations = len(citations)
-        right = numCitations - 1
-        ans = -1
+        right = numCitations
         
-        while left <= right:
+        while left < right:
             mid = left + (right - left) // 2
             
             if numCitations - mid <= citations[mid]:
-                ans = mid
-                right = mid - 1
+                right = mid
             else:
                 left = mid + 1
         
-        return numCitations - ans if ans != -1 else 0
+        return numCitations - left if left < len(citations) else 0
