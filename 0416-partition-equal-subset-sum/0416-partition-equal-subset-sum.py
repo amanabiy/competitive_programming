@@ -15,12 +15,15 @@ class Solution:
         half = totalSum // 2
         dp = [ 0 for _ in range(half + 1)  ]
         dp[0] = True
-            
-        for i in range(1, len(nums)):
-            for j in range(len(dp) - 1, 0, -1):
-                if (j - nums[i - 1] >= 0 and dp[j - nums[i - 1]]):
-                    dp[j] = dp[j - nums[i - 1]] or dp[j]
+        dp2 = dp[::]
+        
+        for i in range(len(nums)):
+            for j in range(len(dp)):
+                if dp[j] and (j + nums[i] <= half):
+                    dp2[j + nums[i]] = dp[j]
+            dp = dp2[::]
 
+        # print(dp)
         return dp[-1]
         
         
