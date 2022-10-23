@@ -13,18 +13,15 @@ class Solution:
             return False
         
         half = totalSum // 2
-        dp = [[ 0 for _ in range(half + 1)] for i in range(len(nums) + 1)]
-        
-        for i in range(len(dp)):
-            dp[i][0] = True
+        dp = [ 0 for _ in range(half + 1)  ]
+        dp[0] = True
             
-        for i in range(1, len(dp)):
-            for j in range(1, len(dp[i])):
-                dp[i][j] = dp[i - 1][j]
-                if j - nums[i - 1] >= 0:
-                    dp[i][j] = dp[i][j] or dp[i - 1][j - nums[i - 1]]
-                
-        return dp[-1][-1]
+        for i in range(1, len(nums)):
+            for j in range(len(dp) - 1, 0, -1):
+                if (j - nums[i - 1] >= 0 and dp[j - nums[i - 1]]):
+                    dp[j] = dp[j - nums[i - 1]] or dp[j]
+
+        return dp[-1]
         
         
         
