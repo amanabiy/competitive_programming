@@ -5,7 +5,7 @@ class Solution:
         
         """
         allSum = sum(nums)
-        nums.sort(reverse=True)
+
         def dfs(i, target, memo):
             
             if target == 0:
