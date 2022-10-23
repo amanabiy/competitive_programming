@@ -1,37 +1,30 @@
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         """
-            1, 5, 11, 5
+               0  1  2  3 4  5 6 7 8 9 10  11
+          1    T  T  F  F     
+          5    T  F  F       T T           
+          11   T             T T            T
+          5    T             T T            T
         
         """
-        allSum = sum(nums)
-
-        def dfs(i, target, memo):
-            
-            if target == 0:
-                return True
-            
-            if i >= len(nums):
-                return False
-
-            if (i, target) in memo:
-                return memo[(i, target)]
-            
-            # take this element
-            res = dfs(i + 1, target - nums[i], memo)
-            
-            if res:
-                memo[(i, target)] = True
-                return True
-
-            # not take this element
-            not_take = dfs(i + 1, target, memo)
-            memo[(i, target)] = not_take
-
-            return memo[(i, target)]
-
-        
-        if allSum % 2 == 1:
+        totalSum = sum(nums)
+        if totalSum % 2:
             return False
-        # print(allSum)
-        return dfs(0, allSum // 2, {0: True})
+        
+        half = totalSum // 2
+        dp = [[ 0 for _ in range(half + 1)] for i in range(len(nums) + 1)]
+        
+        for i in range(len(dp)):
+            dp[i][0] = True
+            
+        for i in range(1, len(dp)):
+            for j in range(1, len(dp[i])):
+                dp[i][j] = dp[i - 1][j]
+                if j - nums[i - 1] >= 0:
+                    dp[i][j] = dp[i][j] or dp[i - 1][j - nums[i - 1]]
+                
+        return dp[-1][-1]
+        
+        
+        
