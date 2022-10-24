@@ -7,34 +7,25 @@ class Solution:
         I have two choices ->
             taking this element and the second one is not take it
             my next dividor is going to be this number
-        """
-
-        def dfs(i, prev = None, memo = {}):
-            if i >= len(nums):
-                return set()
-            
-            if (i, prev) in memo:
-                return memo[(i, prev)]
-    
-            take = set()
-            not_take = set()
-            
-            if not prev or (nums[i] % prev == 0):
-                take =  set(dfs(i + 1, nums[i], memo))
-                take.add(nums[i])
-    
-            not_take = dfs(i + 1, prev, memo)
-            
-            ans = None
-
-            if len(take) > len(not_take):
-                ans = take
-            else:
-                ans = not_take
-            # print(nums[i], ans)
-            memo[(i, prev)] = ans
-            return ans
-
-        nums.sort()        
-        return dfs(0)
         
+          [1  2  3]
+        1  1  2  2
+        2     1  1
+        3  
+        """
+        nums.sort()
+
+        dp = [set([nums[i]]) for i in range(len(nums))]
+        
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                if nums[j] % nums[i] == 0:
+                    if len(dp[j]) < len(dp[i]) + 1:
+                        dp[j] = dp[i] | { nums[j] } 
+        
+        ans = None
+        for val in dp:
+            if not ans or len(ans) < len(val):
+                ans = val
+        
+        return ans
