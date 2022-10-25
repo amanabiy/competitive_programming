@@ -16,7 +16,6 @@ class Solution:
 
         keyNode = {}
         queue = deque([node])
-        visited = set([node])
         
         while queue:
             currNode = queue.popleft()
@@ -25,13 +24,11 @@ class Solution:
             
             for child in currNode.neighbors:
                 if child.val not in keyNode:
+                    queue.append(child)
                     keyNode[child.val] = Node(child.val)
                 
                 keyNode[currNode.val].neighbors.append(keyNode[child.val])
-                if child not in visited:
-                    queue.append(child)
-                    visited.add(child)
-        
+    
         return keyNode[1]
         
         
