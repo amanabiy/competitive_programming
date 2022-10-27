@@ -1,28 +1,18 @@
 class Solution:
     def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
-        ans = [set() for i in range(n)]
-        incoming = { i: 0 for i in range(n) }
-        graph = defaultdict(list)
-        queue = deque()
+        dp = [ [ False for _ in range(n) ] for _ in range(n) ]
+        ans = []
         
-        for come, to in prerequisites:
-            incoming[to] += 1
-            graph[come].append(to)
+        # build graph
+        for pre, dst in prerequisites:
+            dp[pre][dst] = True
         
-        for keys in incoming.keys():
-            if incoming[keys] == 0:
-                queue.append(keys)
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    dp[i][j] = dp[i][j] or (dp[i][k] and dp[k][j])
         
-        while queue:
-            node = queue.popleft()
-            for neigh in graph[node]:
-                ans[neigh] = ans[neigh] | (ans[node])
-                ans[neigh].add(node)
-                incoming[neigh] -= 1
-                if incoming[neigh] == 0:
-                    queue.append(neigh)
-        soln = []      
-        for i, j in queries:
-            soln.append(i in ans[j])
-    
-        return soln
+        for fr, to in queries:
+            ans.append(dp[fr][to])
+        
+        return ans
