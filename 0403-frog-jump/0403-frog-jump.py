@@ -11,33 +11,19 @@ class Solution:
         """
         if stones[1] != 1:
             return False
-        ending = stones[-1]
-        stones = set(stones)
-        memo = {}
-        def dfs(stone, k):
-            if stone == ending:
-                return True
-            if stone not in stones:
-                return False
-            
-            if (stone, k) in memo:
-                return memo[(stone, k)]
-    
-            ans = False
-            
-            # with the same k
-            ans = ans or dfs(stone + k, k)
-        
-            # increase with the k            
-            ans = ans or dfs(stone + k + 1, k + 1)
 
-            # decrease with k
-            if k - 1 > 0:
-                ans = ans or dfs(stone + k - 1, k - 1)
-            
-            memo[(stone, k)] = ans
-            return ans
+        reachedWithK = defaultdict(set)
+        reachedWithK[1] = {1}
         
-        return dfs(1, 1)
+        for i in range(1, len(stones)):
+            for j in reachedWithK[stones[i]]:
+                val = stones[i] + j
+                reachedWithK[val].add(j)
+                reachedWithK[val + 1].add(j + 1)
+                if j - 1 > 0:
+                    reachedWithK[val - 1].add(j - 1)
+
+        return len(reachedWithK[stones[-1]]) > 0 
+        
             
             
