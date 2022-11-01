@@ -5,23 +5,25 @@ class Solution:
             return 1
 
         prevIsPositive = None 
-        ans = [nums[0]]
+        ans = nums[0]
+        count = 1
 
         for i in range(1, len_nums):
+
             # lookinf for negative parity
             if prevIsPositive == None:
-                if ans[-1] != nums[i]:
-                    prevIsPositive = nums[i] - ans[-1] > 0 # True if have a positive parity
-                    ans.append(nums[i])
+                if ans != nums[i]:
+                    prevIsPositive = nums[i] - ans > 0 # True if have a positive parity
+                    count += 1
             elif prevIsPositive:
-                if ans[-1] > nums[i]:
-                    ans.append(nums[i])
+                if ans > nums[i]:
+                    count += 1
                     prevIsPositive = False
             else:
-                if ans[-1] < nums[i]:
-                    ans.append(nums[i])
+                if ans < nums[i]:
+                    count += 1
                     prevIsPositive = True
-            ans[-1] = nums[i]
+            ans = nums[i]
 
-        return len(ans)
+        return count
 
