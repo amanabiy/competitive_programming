@@ -1,9 +1,10 @@
 class Solution:
-    def bubbleSort(self, startIndex, endIndex, nums):
-        for i in range(startIndex, endIndex):
-            for j in range(startIndex, endIndex - 1):
-                if nums[j] > nums[j + 1]:
-                    nums[j], nums[j + 1] = nums[j + 1], nums[j]
+    def reverse(self, startIndex, endIndex, nums):
+        endIndex -= 1
+        while startIndex < endIndex:
+            nums[startIndex], nums[endIndex] = nums[endIndex], nums[startIndex]
+            startIndex += 1
+            endIndex -= 1
 
     def nextPermutation(self, nums: List[int]) -> None:
         """
@@ -16,22 +17,29 @@ class Solution:
         [3, 2, 1] -> [1, 2, 3]
         [2, 2, 2] -> [2, 2, 2]
         [4,2,0,2,3,2,0]  -> [4, 2, 2, ]
-        [4,2,0,3,2,2,0]
-        
+        [4,2,0,3,2,2,0] -> [4,2,0,3,0,2,2]
+             l
+                   r
         """
-        swaps = [float('-inf'), float('inf')] # [smallerIndex, largerIndex] -> tobe swapped
-        
-        for i in range(len(nums) - 1, -1, -1):
-            for j in range(i - 1, -1, -1):
-                # try to swap the digits and then sort the left part
-                if nums[j] < nums[i] and (swaps[0] < j or( swaps[0] == j and nums[swaps[1]] > nums[i])):
-                    swaps = [j, i]
+        swap = float('inf') 
+        currIndex = len(nums) - 1
 
-        if swaps[0] != float('-inf'): 
-            nums[swaps[0]], nums[swaps[1]] = nums[swaps[1]], nums[swaps[0]]
-            self.bubbleSort(swaps[0] + 1, len(nums), nums)
+        # continue searching where it gets lower
+        while currIndex > 0:
+            if nums[currIndex] > nums[currIndex - 1]:
+                # find the position where this element belongs
+                possiblePos = currIndex
+                while possiblePos < len(nums) and nums[possiblePos] > nums[currIndex - 1]:
+                    possiblePos += 1
+                swap = possiblePos - 1
+                break
+            currIndex -= 1
+
+        if swap != float('inf'):
+            nums[swap], nums[currIndex - 1] = nums[currIndex - 1], nums[swap]
+            self.reverse(currIndex, len(nums), nums)
             return nums
         
-        self.bubbleSort(0, len(nums), nums)
+        self.reverse(0, len(nums), nums)
         return nums
         
