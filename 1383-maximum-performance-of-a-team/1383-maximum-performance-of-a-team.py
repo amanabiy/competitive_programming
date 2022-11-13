@@ -1,21 +1,22 @@
 class Solution:
     def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
-        """
-        n - engineers
-        n - speed and effiecency
-        
-        choose k engeeners with maximum
-        preformance = sum(speed) * min(effiecency)
+        efficiencySpeed = []
+        taken = []
+        totalSum = 0
+        bestPerformance = 0
+        n = len(speed)
+        mod = 10 ** 9 + 7
 
-        """
-        cur_sum, h = 0, []
-        ans = -float('inf')
+        for i in range(n):
+            efficiencySpeed.append((efficiency[i], speed[i])) # [effficency, speed]
+
+        efficiencySpeed.sort()
+
+        for i in range(n - 1, -1, -1):
+            while len(taken) == k:
+                totalSum -= heapq.heappop(taken)
+            totalSum += efficiencySpeed[i][1]
+            heapq.heappush(taken, efficiencySpeed[i][1])
+            bestPerformance = max(bestPerformance, (totalSum * efficiencySpeed[i][0]) )
         
-        for i, j in sorted(zip(efficiency, speed),reverse=True):
-            while len(h) > k-1:
-                cur_sum -= heappop(h)
-            heappush(h, j)
-            cur_sum += j
-            ans = max(ans, cur_sum * i)
-            
-        return ans % (10**9+7)
+        return bestPerformance % mod
