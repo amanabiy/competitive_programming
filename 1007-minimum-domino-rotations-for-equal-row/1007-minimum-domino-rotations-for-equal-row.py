@@ -14,6 +14,6 @@ class Solution:
         min_rotation = float('inf')
         for i in range(1, 7):
             if sum(countOccurence[i]) == n:
-                min_rotation = min([countOccurence[i][0], countOccurence[i][1], min_rotation])
+                return min([countOccurence[i][0], countOccurence[i][1]])
 
-        return min_rotation if min_rotation != float('inf') else -1
+        return -1
