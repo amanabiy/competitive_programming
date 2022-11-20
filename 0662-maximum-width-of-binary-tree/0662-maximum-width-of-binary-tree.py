@@ -12,7 +12,7 @@
 class Solution:
     def widthOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         ans = 0
-        queue = deque([[root, 0, 1]])
+        queue = deque([[root, 1]])
         
         
         while queue:
@@ -21,13 +21,13 @@ class Solution:
             count = 0
 
             for _ in range(len(queue)):
-                node, before, pos = queue.popleft()
+                node, pos = queue.popleft()
                 mostLeft = min(pos, mostLeft)
                 mostRight = max(pos, mostRight)
                 if node.left:
-                    queue.append((node.left, before, (pos * 2) + 1))
+                    queue.append((node.left, (pos * 2) + 1))
                 if node.right:
-                    queue.append((node.right, before, (pos) * 2))
+                    queue.append((node.right, (pos) * 2))
                 count += 1
 
             ans = max(ans, (mostRight - mostLeft + 1))
