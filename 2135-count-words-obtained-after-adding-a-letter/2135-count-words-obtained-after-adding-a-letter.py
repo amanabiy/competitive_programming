@@ -1,6 +1,6 @@
 class Solution:
     def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
-        seen = Counter(["".join(sorted(i)) for i in startWords])
+        seen = set(["".join(sorted(i)) for i in startWords])
         ans = 0
 
         for w in targetWords:
