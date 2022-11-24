@@ -16,7 +16,7 @@ class Solution:
         
         left = 0
         right = 0
-        while right < len(s) and left < len(s):
+        while left < len(s):
             end = lastSeen[s[left]]
             while right <= end:
                 end = max(lastSeen[s[right]], end)
