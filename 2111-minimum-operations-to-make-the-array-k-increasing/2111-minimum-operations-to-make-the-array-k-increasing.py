@@ -7,18 +7,7 @@ class Solution:
             else:
                 left = 0
                 right = len(ans) - 1
-                index = -1
-                
-                while left <= right:
-                    mid = left + (right - left) // 2
-                    
-                    if ans[mid] <= num:
-                        left = mid + 1
-                        index = mid
-                    else:
-                        right = mid - 1
-                        
-                index += 1
+                index = bisect.bisect_right(ans, num)
                 ans[index] = num
         
         return len(ans)
