@@ -51,12 +51,8 @@ class Codec:
         
         for i in range(len(data)):
             if data[i] != '@':
-                leftChild = child - 1
-                rightChild = child
-                if leftChild < len(data) and data[leftChild] != '@':
-                    nodes[i].left = nodes[leftChild]
-                if rightChild < len(data) and data[rightChild] != '@':
-                    nodes[i].right = nodes[rightChild]
+                nodes[i].left = nodes[child - 1]
+                nodes[i].right = nodes[child]
                 child += 2
         
         return nodes[0]
