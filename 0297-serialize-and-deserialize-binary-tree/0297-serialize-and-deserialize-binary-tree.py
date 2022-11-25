@@ -37,28 +37,25 @@ class Codec:
         
         :type data: str
         :rtype: TreeNode
-        """
-        if data[0] == '@':
-            return None
-        
-        nodes = [TreeNode()]
+        """        
+        nodes = []
         data = data.split('#')
         parent = 0
         child = 2
         
-        for _ in range(1, len(data)):
-            nodes.append(None)
+        for i in range(len(data)):
+            if data[i] != '@':
+                nodes.append(TreeNode(int(data[i])))
+            else:
+                nodes.append(None)
         
         for i in range(len(data)):
             if data[i] != '@':
-                nodes[i].val = int(data[i])
                 leftChild = child - 1
                 rightChild = child
                 if leftChild < len(data) and data[leftChild] != '@':
-                    nodes[leftChild] = TreeNode()
                     nodes[i].left = nodes[leftChild]
                 if rightChild < len(data) and data[rightChild] != '@':
-                    nodes[rightChild] = TreeNode()
                     nodes[i].right = nodes[rightChild]
                 child += 2
         
