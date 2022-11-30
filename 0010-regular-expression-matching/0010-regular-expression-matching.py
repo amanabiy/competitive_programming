@@ -1,6 +1,7 @@
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
         
+        @lru_cache(None)
         def dfs(i, j):
             if i == len(s) and j == len(p):
                 return True
