@@ -1,13 +1,25 @@
 class Solution:
-    def minFallingPathSum(self, grid: List[List[int]]) -> int:
-        """
-        Try with normal dfs
-        """
-        dp = grid[0].copy()
-        for i in range(1, len(grid)):
-            for j in range(len(grid[i])):
-                grid[i][j] = min(dp[j+1:]+dp[:j]) + grid[i][j]
-            dp = grid[i].copy()
+    def minFallingPathSum(self, grid: List[List[int]]) -> int:      
+        # grid = [(val, (i, j)) for v]
+        n = len(grid)
+        m = len(grid[0])
+        minHeap = [[0, -1], [0, -1]] #[val, index]
+        dp = [ [ 0 for i in range(m)] for i in range(n)]
         
-        return min(dp)
-            
+        for i in range(n):
+            newHeap = []
+            val, firstIndex = heapq.heappop(minHeap)
+            for j in range(m):
+                x = grid[i][j]
+                if j != firstIndex:
+                    x += val
+                else:
+                    x += minHeap[0][0]
+                dp[i][j] += x
+                heapq.heappush(newHeap, [dp[i][j], j])
+
+            minHeap = newHeap
+        
+        return min(dp[-1])
+                                             
+        
