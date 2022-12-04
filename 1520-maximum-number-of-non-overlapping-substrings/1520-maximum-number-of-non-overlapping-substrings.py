@@ -9,7 +9,7 @@ class Solution:
             end = max(last[s[i]], end)
 
         return end
-
+    
     def maxNumOfSubstrings(self, s: str) -> List[str]:
         last = {}
         seen = set()
@@ -18,22 +18,18 @@ class Solution:
         # get the last position of the letters
         for i, l in enumerate(s):
             last[l] = i
-
         end = float('-inf')
 
         # Iterate and try to expand
         for i in range(len(s)):
-            if s[i] not in seen:
-                lastInd = self.expandEnd(s, i, last, seen)
-
-                # consider whether to add it to ans or just replace the previous one                
-                if lastInd != -1:
-                    if end < i:
-                        ans.append(s[i:lastInd + 1])
-                    elif lastInd <= end:
-                        ans[-1] = s[i:lastInd + 1]
-                    end = lastInd
-
-                seen.add(s[i])
+            lastInd = self.expandEnd(s, i, last, seen)
+            # consider whether to add it to ans or just replace the previous one                
+            if lastInd != -1:
+                if end < i:
+                    ans.append(s[i:lastInd + 1])
+                elif lastInd <= end:
+                    ans[-1] = s[i:lastInd + 1]
+                end = lastInd
+            seen.add(s[i])
 
         return ans
