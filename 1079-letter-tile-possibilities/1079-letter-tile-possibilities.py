@@ -1,21 +1,17 @@
 class Solution:
     def numTilePossibilities(self, tiles: str) -> int:
-        visited = set()
+        count = Counter(tiles)
         
         
-        def backtrack(collected, seen):
-            s = ''.join(collected)
-            if s not in visited:
-                visited.add(s)
+        def backtrack():
+            ans = 0
+            for k in count:
+                if count[k]:
+                    count[k] -= 1
+                    ans += backtrack() + 1
+                    count[k] += 1
             
-            for i in range(len(tiles)):
-                if i not in seen:
-                    seen.add(i)
-                    collected.append(tiles[i])
-                    backtrack(collected, seen)
-                    seen.remove(i)
-                    collected.pop()
+            return ans
 
-        backtrack([], set())
-        return len(visited) - 1
+        return backtrack()
         
