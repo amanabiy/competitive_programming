@@ -1,29 +1,15 @@
-class Solution:
-    def right(self, arr, val):
-        lo = 0
-        hi = len(arr) - 1
-        
-        while lo <= hi:
-            mid = lo + (hi - lo) // 2
-            if arr[mid] <= val:
-                lo = mid + 1
-            else:
-                hi = mid - 1
-        
-        return lo
-                
+class Solution:               
     def maxTwoEvents(self, events: List[List[int]]) -> int:
-        prefixSum = [0]
+        heap = []
         ans = float('-inf')
+        curr = 0
         events.sort()
-        startTime = [s for s, e, v in events]
         
-        for i in range(len(events) - 1, -1, -1):
-            prefixSum.append(max(prefixSum[-1], events[i][2]))
-        
-        prefixSum = prefixSum[::-1]
         for i in range(len(events)):
-            index = self.right(startTime, events[i][1])
-            ans = max(ans, prefixSum[index] + events[i][2])
-        
+            s, e, val = events[i]
+            while heap and heap[0][0] < s:
+                curr = max(curr, heapq.heappop(heap)[1])
+            ans = max(ans, val + curr)
+            heapq.heappush(heap, (e, val))
+            
         return ans
