@@ -3,22 +3,19 @@ class Solution:
         """
         
         """
-        
-        def dp(index, memo={}):
-            if index >= len(questions):
-                return 0
-            
-            if index in memo:
-                return memo[index]
+        n = len(questions)
+        dp = [0] * (n + 1)
     
-            # taking this question
-            take = dp(index + questions[index][1] + 1) + questions[index][0]
-            
-            # skiping this question
-            not_take = dp(index + 1)
-            
-            memo[index] = max(not_take, take)
-            return memo[index]
+        for i in range(n - 1, -1, -1):
+            nextHoop = questions[i][1] + i + 1
+            valHoop = questions[i][0]
+            if nextHoop < n:
+                valHoop += dp[nextHoop]
+            dp[i] = max(valHoop, dp[i + 1])
+        
+        return dp[0]
+        
+        
 
 
-        return dp(0)
+        return 
