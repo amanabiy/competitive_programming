@@ -1,8 +1,24 @@
 class Solution:
     def mostPoints(self, questions: List[List[int]]) -> int:
-        memo = defaultdict(int)
+        """
         
-        for i in range(len(questions) - 1, -1 , -1):
-            memo[i] = max(questions[i][0] + memo[i + questions[i][1] + 1], memo[i+1])      
+        """
+        
+        def dp(index, memo={}):
+            if index >= len(questions):
+                return 0
+            
+            if index in memo:
+                return memo[index]
+    
+            # taking this question
+            take = dp(index + questions[index][1] + 1) + questions[index][0]
+            
+            # skiping this question
+            not_take = dp(index + 1)
+            
+            memo[index] = max(not_take, take)
+            return memo[index]
 
-        return max(memo.values())
+
+        return dp(0)
