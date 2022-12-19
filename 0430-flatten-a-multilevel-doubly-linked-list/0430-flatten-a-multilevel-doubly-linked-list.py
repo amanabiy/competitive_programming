@@ -15,25 +15,26 @@ class Solution:
         def dfs(node):
             if not node:
                 return None
-
-            child = dfs(node.child)
-            temp = node.next
-            x = None      
-            if child:
-                node.next = node.child
-                node.child.prev = node
-                child.next = temp
-                node.child = None
-                if temp:
-                    temp.prev = child
-                else:
-                    return child
             
-            x = dfs(temp)
-            if x == None:
-                return node
+            currNode = node
+            nextTemp = node.next
+            prev = None
+    
+            while currNode:
+                if currNode.child:
+                    tail = dfs(currNode.child)
+                    tail.next = currNode.next
+                    if currNode.next:
+                        currNode.next.prev = tail
+                    currNode.next = currNode.child
+                    currNode.child.prev = currNode
+                    currNode.child = None
+                    currNode = tail.next
+                    prev = tail
+                else:
+                    prev, currNode = currNode, currNode.next
+            
+            return prev
 
-            return x
-        
         dfs(head)
         return root
