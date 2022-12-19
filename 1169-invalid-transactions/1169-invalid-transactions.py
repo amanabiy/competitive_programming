@@ -10,27 +10,26 @@ class Solution:
         alice: [listOfTransactions]
         
         """
-        trans = defaultdict(list)
+        trans = defaultdict(dict)
         invalid = set()
-        count = Counter(transactions)
         
-        for i, tr in enumerate(transactions):
-            name, time, score, place = tr.split(",")
-            trans[name].append([int(time), int(score), place, i])
+        for data in transactions:
+            name, time, amount, place = data.split(",")
+            time = int(time)
+            if time not in trans:
+                trans[name][time] = {place}
+            else:
+                trans[name][time].add(place)
         
-        for key in trans:
-            data = trans[key]
-            for i in data:
-                if i[1] > 1000:
-                    invalid.add(i[3])
-                for j in data:
-                    if abs(i[0] - j[0]) <= 60 and i[2] != j[2]:
-                        invalid.add(i[3])
-                        invalid.add(j[3])
+        for i, data in enumerate(transactions):
+            name, time, amount, place = data.split(",")
+            time = int(time)
+            if int(amount) > 1000:
+                invalid.add(i)
+                continue
 
-        ans = []
-        for i in invalid:
-            ans.append(transactions[i])
-
-        return ans
-                    
+            for t in range(time - 60, time + 61):
+                if t in trans[name] and (place not in trans[name][t] or len(trans[name][t]) > 1):
+                    invalid.add(i)
+        
+        return [transactions[i] for i in invalid]
