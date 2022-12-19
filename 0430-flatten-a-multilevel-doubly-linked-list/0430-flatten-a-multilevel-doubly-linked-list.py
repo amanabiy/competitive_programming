@@ -10,26 +10,26 @@ class Node:
 
 class Solution:
     def flatten(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        root = head
+        stack = []
+        currNode = head
+        prev = None
+
+        while currNode or stack:
+            if currNode:
+                if currNode.child:
+                    if currNode.next:
+                        stack.append(currNode.next)
+                    currNode.next = currNode.child
+                    child = currNode.child
+                    currNode.child.prev = currNode
+                    currNode.child = None
+                    prev, currNode = currNode, child
+                else:
+                    prev, currNode = currNode, currNode.next
+            else:
+                node = stack.pop()
+                prev.next = node
+                node.prev = prev
+                currNode = node
         
-        def dfs(node):
-            if not node:
-                return None
-            
-            child = dfs(node.child)
-            nextTemp = node.next
-            
-            if child:
-                # connect the child
-                child.next = nextTemp
-                if nextTemp:
-                    nextTemp.prev = child
-                node.next = node.child
-                node.child.prev = node
-                node.child = None
-
-            nexts = dfs(nextTemp)            
-            return nexts or nextTemp or child or node
-
-        dfs(head)
-        return root
+        return head
