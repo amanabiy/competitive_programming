@@ -22,14 +22,15 @@ class Solution:
             data = trans[key]
             for i in data:
                 if i[1] > 1000:
-                    invalid.add(transactions[i[3]])
+                    invalid.add(i[3])
                 for j in data:
                     if abs(i[0] - j[0]) <= 60 and i[2] != j[2]:
-                        invalid.add(transactions[i[3]])
-                        invalid.add(transactions[j[3]])
+                        invalid.add(i[3])
+                        invalid.add(j[3])
+
         ans = []
         for i in invalid:
-            for _ in range(count[i]):
-                ans.append(i)
+            ans.append(transactions[i])
+
         return ans
                     
