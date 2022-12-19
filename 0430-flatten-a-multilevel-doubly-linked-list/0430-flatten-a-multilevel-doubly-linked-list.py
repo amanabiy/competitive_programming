@@ -16,25 +16,20 @@ class Solution:
             if not node:
                 return None
             
-            currNode = node
+            child = dfs(node.child)
             nextTemp = node.next
-            prev = None
-    
-            while currNode:
-                if currNode.child:
-                    tail = dfs(currNode.child)
-                    tail.next = currNode.next
-                    if currNode.next:
-                        currNode.next.prev = tail
-                    currNode.next = currNode.child
-                    currNode.child.prev = currNode
-                    currNode.child = None
-                    currNode = tail.next
-                    prev = tail
-                else:
-                    prev, currNode = currNode, currNode.next
             
-            return prev
+            if child:
+                # connect the child
+                child.next = nextTemp
+                if nextTemp:
+                    nextTemp.prev = child
+                node.next = node.child
+                node.child.prev = node
+                node.child = None
+
+            nexts = dfs(nextTemp)            
+            return nexts or nextTemp or child or node
 
         dfs(head)
         return root
