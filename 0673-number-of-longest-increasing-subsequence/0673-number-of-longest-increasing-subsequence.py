@@ -3,24 +3,25 @@ class Solution:
         """
         1
         """
-        dp = [[1, 1] for i in range(len(nums)) ] # length until now and quantity
+        dp = [1] * len(nums)
+        dpCount = [1] * len(nums)
+        maxim = 1
+
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                if nums[i] < nums[j]:
+                    newValue = dp[i] + 1
+                    if newValue > dp[j]:
+                        dp[j] = newValue
+                        dpCount[j] = dpCount[i]
+                    elif newValue == dp[j]:
+                        dpCount[j] += dpCount[i]
+                    maxim = max(dp[j], maxim)
+
+        ans = 0
+        for i in range(len(nums)):
+            if dp[i] == maxim:
+                ans += dpCount[i]
+
+        return ans
         
-        for i, num in enumerate(nums):
-            for j in range(i):
-                if nums[j] < num:
-                    curr = dp[j][0] + 1
-                    if curr > dp[i][0]:
-                        dp[i] = [curr, dp[j][1]]
-                    elif curr == dp[i][0]:
-                        dp[i][1] += dp[j][1]
-
-        total = 0
-        maxim = float('-inf')
-        for val, size in dp:
-            if val == maxim:
-                total += size
-            elif val > maxim:
-                total = size
-                maxim = val
-
-        return total
