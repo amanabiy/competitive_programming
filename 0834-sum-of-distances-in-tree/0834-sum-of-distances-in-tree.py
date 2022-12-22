@@ -1,7 +1,5 @@
 class Solution:
     def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
-        """
-        """
         memo = {}
         answer = [0] * n
         graph = defaultdict(list)
@@ -23,10 +21,8 @@ class Solution:
 
         def getTotalAns(node, parent, answer):
             if parent != -1:
-                thisChilds = memo[node][0] + memo[node][1]
-                answer[node] = answer[parent] - thisChilds + (n - memo[node][1]) + memo[node][0]
-                # calculate
-                
+                answer[node] = answer[parent] - memo[node][1] + (n - memo[node][1])
+
             for child in graph[node]:
                 if child != parent:
                     getTotalAns(child, node, answer)
