@@ -1,18 +1,25 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
-        ans = set()
+        memo = [ set() for _ in range(len(s))]
         
-        def backtrack(i, collected, s, wordDict):
+        def dfs(i, s, wordDict):
             if i >= len(s):
-                ans.add(' '.join(collected))
-            
-            for j in range(i, min(i + 11, len(s) + 1)):
-                if s[i:j] in wordDict:
-                    collected.append(s[i:j])
-                    backtrack(j, collected, s, wordDict)
-                    collected.pop()
+                return {''}
+
+            if memo[i]:
+                return memo[i]
         
-        backtrack(0, [], s, set(wordDict))
-        return ans
-                    
+            for j in range(i+1, i+11):
+                word = s[i:j]
+                if word in wordDict:
+                    got = dfs(j, s, wordDict)
+                    for sf in got:
+                        split = " " if sf else ""
+                        memo[i].add(word + split + sf)
+            
+            return memo[i]
+        
+        return dfs(0, s, set(wordDict))
+        
+
             
