@@ -4,10 +4,9 @@ class Solution:
         
         def backtrack(i, collected, s, wordDict):
             if i >= len(s):
-                # add it to your answer
                 ans.add(' '.join(collected))
             
-            for j in range(i, i + 11):
+            for j in range(i, min(i + 11, len(s) + 1)):
                 if s[i:j] in wordDict:
                     collected.append(s[i:j])
                     backtrack(j, collected, s, wordDict)
