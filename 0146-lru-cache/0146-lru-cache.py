@@ -7,45 +7,29 @@ class Node:
 
 class DoublyLinkedList:
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.head = Node(-1, -1)
+        self.tail = Node(-1, -1)
+        self.head.next = self.tail
+        self.tail.prev = self.head
     
-    def addAtEnd(self, key, val):
-        node = Node(key, val)
-        if self.tail:
-            node.prev = self.tail
-            self.tail.next = node
-        else:
-            self.head = node
-        self.tail = node
-        return node
-    
-    def deleteFirst(self):
-        if self.head:
-            self.head = self.head.next
-            if self.head:
-                self.head.prev = None
-            else:
-                self.tail = None
-    
-    def moveToLast(self, node):
-        # if at the end or one
-        if self.tail == node:
-            return
-    
-        # if at the beggning
-        if node.prev:
-            node.prev.next = node.next
-        else:
-            self.head = node.next
-        node.next.prev = node.prev
+    def add(self, key, val):
+        lastNode = self.tail.prev
+        newNode = Node(key, val)
+        newNode.next = lastNode.next
+        lastNode.next = newNode
+        newNode.prev = lastNode
+        self.tail.prev = newNode
+        return newNode
         
-        # build connection with the tail
-        self.tail.next = node
-        node.prev = self.tail
-        self.tail = node
-
-        
+    def delete(self, node):
+        prev = node.prev
+        prev.next = node.next
+        node.next.prev = prev
+        del node
+    
+    def getFrist(self):
+        if self.head.next != self.tail:
+            return self.head.next
 
 class LRUCache:
 
@@ -57,21 +41,18 @@ class LRUCache:
     def get(self, key: int) -> int:
         if key not in self.mapNodes:
             return -1
-        node = self.mapNodes[key]
-        self.nodes.moveToLast(node)
-        return node.val
-        
+        node = self.mapNodes[key].val
+        self.nodes.delete(self.mapNodes[key])
+        self.mapNodes[key] = self.nodes.add(key, node)
+        return node
     
     def put(self, key: int, value: int) -> None:
         if key in self.mapNodes:
-            node = self.mapNodes[key]
-            node.val = value
-            self.nodes.moveToLast(node)
-        else:
-            if len(self.mapNodes) == self.capacity:
-                del self.mapNodes[self.nodes.head.key]
-                self.nodes.deleteFirst()
-            self.mapNodes[key] = self.nodes.addAtEnd(key, value)
+            self.nodes.delete(self.mapNodes[key])
+        if len(self.mapNodes) == self.capacity and key not in self.mapNodes:
+            self.mapNodes.pop(self.nodes.head.next.key)
+            self.nodes.delete(self.nodes.head.next)
+        self.mapNodes[key] = self.nodes.add(key, value)
     
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
