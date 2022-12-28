@@ -4,16 +4,10 @@ class Solution:
         mod = 10 ** 9 + 7
         ans = 0
         
-        def numBits(num):
-            count = 0
-            while num:
-                num >>= 1
-                count += 1
-            return count
-        
+
         deliciousness.sort()
         for num in deliciousness:
-            nextNum = 1 << (numBits(num))
+            nextNum = 1 << (num.bit_length())
             if nextNum - num in seen:
                 ans = (ans + seen[nextNum - num]) % mod
             if num != 0 and (num - 1) & (num) == 0:
