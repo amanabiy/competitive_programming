@@ -4,7 +4,7 @@ class Solution:
         m = len(grid[0])
         cols = [0] * m
         rows = [0] * n
-        diff = [[ 0 for _ in range(m) ] for _ in range(n)]
+        diff = [[0] * m for _ in range(n)]
         
         for i in range(n):
             for j in range(m):
@@ -13,7 +13,7 @@ class Solution:
         
         for i in range(n):
             for j in range(m):
-                diff[i][j] = cols[j] + rows[i] - (m - cols[j]) - (n - rows[i])
+                diff[i][j] = (cols[j] + rows[i]) * 2 - m - n
         
         return diff
     
