@@ -8,31 +8,23 @@ class Solution:
         paper -> aa
         """
         n = len(s)
-        lessInFuture = [0] * (n + 1)
+        lessInFuture = ['z'] * (n + 1)
         a = ord('a')
         t = []
         ans = []
+
+        # add a dummy data to remove all at the end
+        s += chr(ord('z') + 1)
         
         # making the prefix array
         for i in range(n - 1, -1, -1):
-            letter = ord(s[i]) - a
-            lessInFuture[i] = lessInFuture[i + 1] | 1 << letter
+            lessInFuture[i] = min(s[i], lessInFuture[i + 1])
         
-        # add a dummy data to remove all at the end
-        s += chr(ord('z') + 1)
 
         # iterating and deciding whether to include it or not
         for i in range(n + 1):
-            while t and ord(t[-1]) <= ord(s[i]):
-                allowPop = True
-                for num in range(ord(t[-1]) - ord('a')):
-                    if lessInFuture[i] & (1 << num):
-                        allowPop = False
-                        break
-                if allowPop:
-                    ans.append(t.pop())
-                else:
-                    break
+            while t and t[-1] <= lessInFuture[i]:
+                ans.append(t.pop())
             t.append(s[i])
 
         return ''.join(ans)
