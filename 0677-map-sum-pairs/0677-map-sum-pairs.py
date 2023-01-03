@@ -16,10 +16,11 @@ class Trie:
         for char in word:
             if char not in curr.child:
                 curr.child[char] = Node()
+            curr.value += val
             curr = curr.child[char]
         
         curr.isEnd = True
-        curr.value = val
+        curr.value += val
         
     def getSum(self, prefix):
         # O(lenWord * numWord)
@@ -30,26 +31,19 @@ class Trie:
                 return 0
             curr = curr.child[char]
         
-        return self.dfs(curr)
-    
-    def dfs(self, node):
-        if not node:
-            return 0
-        
-        ans = node.value
-        
-        for child in node.child:
-            ans += self.dfs(node.child[child])
-        
-        return ans
+        return curr.value
+
 
 class MapSum:
 
     def __init__(self):
         self.trie = Trie()
+        self.word = defaultdict(int)
 
     def insert(self, key: str, val: int) -> None:
-        self.trie.add(key, val)
+        newVal = val - self.word[key]
+        self.word[key] = val
+        self.trie.add(key, newVal)
 
     def sum(self, prefix: str) -> int:
         return self.trie.getSum(prefix)
