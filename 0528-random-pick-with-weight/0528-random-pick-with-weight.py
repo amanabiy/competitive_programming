@@ -9,8 +9,19 @@ class Solution:
 
     def pickIndex(self) -> int:
         picked = random.randint(1, self.prefixSum[-1])
-        index = bisect.bisect_left(self.prefixSum, picked)
-        return index - 1
+        left = 0
+        right = len(self.prefixSum) - 1
+        ans = 0
+
+        while left <= right:
+            mid = left + (right - left) // 2
+            if self.prefixSum[mid] >= picked:
+                ans = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+                
+        return ans - 1
 
 
 # Your Solution object will be instantiated and called as such:
