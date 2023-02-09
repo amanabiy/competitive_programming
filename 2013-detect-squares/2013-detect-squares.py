@@ -1,21 +1,26 @@
 class DetectSquares:
 
     def __init__(self):
-        self.points = Counter({})
+        self.points = {}
 
     def add(self, point: List[int]) -> None:
-        self.points[tuple(point)] += 1
+        self.points[tuple(point)] = self.points.get(tuple(point), 0) + 1
+        return
+
+    def is_square(self, xi, yi, xf, yf)->None:
+        return not (xi == xf or yi == yf or abs(xi - xf) != abs(yi - yf))
 
     def count(self, point: List[int]) -> int:
-        numRectangles = 0
-        
-        x2, y2 = point
-        for x1, y1 in self.points.keys():
-            if (abs(y2-y1) != abs(x2-x1)) or x1 == x2 or y1 == y2:
-                continue
-            numRectangles += self.points[(x1, y2)] * self.points[(x2, y1)] * self.points[(x1, y1)]
+        count = 0
+        for xf, yf in self.points:
+            xi, yi = point
+            if self.is_square(xi, yi, xf, yf):
+                count += self.points.get((xi, yf), 0) * self.points.get((xf, yi), 0) * self.points.get((xf, yf), 0)
+    
+        return count
 
-        return numRectangles
+        
+        
 
 
 # Your DetectSquares object will be instantiated and called as such:
