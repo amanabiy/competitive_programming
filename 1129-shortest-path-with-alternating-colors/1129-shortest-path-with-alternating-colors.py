@@ -5,9 +5,9 @@ class Solution:
         1       
             
         """
-        queue = deque([(0, 'N', 0)])
+        queue = deque([(0, -1, 0)])
         graph = defaultdict(lambda: [[], []]) # [ [red], [blue]]
-        visited = set([(0, 'N')])
+        visited = set([(0, -1)])
         ans = [-1 for i in range(n)]
         ans[0] = 0
         
@@ -24,19 +24,19 @@ class Solution:
 
                 if ans[node] == -1:
                     ans[node] = travel
-            
-                if prevColor != 'R':
-                    for child in graph[node][0]:
-                        if (child, 'R') not in visited:
-                            queue.append((child, 'R', travel + 1))
-                            visited.add((child, 'R'))
-                
-                if prevColor != 'B':
-                    for child in graph[node][1]:
-                        if (child, 'B') not in visited:
-                            queue.append((child, 'B', travel + 1))
-                            visited.add((child, 'B'))
 
+                a = []
+                if prevColor != True:
+                    a.append(True)
+                if prevColor != False:
+                    a.append(False)
+
+                for x in a:
+                    for child in graph[node][x]:
+                        if (child, x) not in visited:
+                            queue.append((child, x, travel + 1))
+                            visited.add((child, x))
+            
         return ans
         
         
