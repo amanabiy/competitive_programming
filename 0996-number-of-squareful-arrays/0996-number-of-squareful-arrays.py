@@ -1,18 +1,15 @@
 class Solution:
     def numSquarefulPerms(self, nums: List[int]) -> int:
-        considered = set()
+        self.considered = 0
         
         def backtrack(i):
             if i >= len(nums):
-                x = "".join(map(str, nums))
-                if x in considered:
-                    return
-                considered.add(x)
+                self.considered += 1
                 
-                
+            tried = set()
             for j in range(i, len(nums)):
                 # check validity before swap
-                if nums[i] == nums[j] and i != j:
+                if nums[i] == nums[j] and i != j or nums[j] in tried:
                     continue
                     
                 nums[i], nums[j] = nums[j], nums[i]
@@ -26,6 +23,7 @@ class Solution:
                     backtrack(i + 1)
 
                 nums[i], nums[j] = nums[j], nums[i]
+                tried.add(nums[j])
         
         backtrack(0)
-        return len(considered)
+        return self.considered
