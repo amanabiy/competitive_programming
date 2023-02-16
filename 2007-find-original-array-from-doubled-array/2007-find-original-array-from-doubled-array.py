@@ -1,12 +1,20 @@
 class Solution:
     def findOriginalArray(self, changed: List[int]) -> List[int]:
-        unchanged = []
         changed.sort()
-        counter = Counter(changed)
-        for i in range(len(changed)):
-            if counter[changed[i]] and counter[changed[i] * 2]:                
-                if (changed[i] == 0 and counter[0] > 1) or changed[i] != 0:
-                    counter[changed[i]*2] -= 1
-                    counter[changed[i]] -= 1
-                    unchanged.append(changed[i])
-        return unchanged if len(unchanged) == len(changed) / 2 else []
+        count = Counter()
+        ans = []
+        
+        for num in changed:
+            count[num] += 1
+            if num == 0 and count[num] < 2:
+                continue
+            if num % 2 == 0 and count[num // 2]:
+                count[num // 2] -= 1
+                count[num] -= 1
+                ans.append(num // 2)
+        
+        if len(ans) == len(changed) / 2:
+            return ans
+        return []
+            
+        
