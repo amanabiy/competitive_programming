@@ -39,16 +39,19 @@ class Solution:
         visited -> 26 , inMiddle -> 26
         Space: O(26) -> O(1)
         """
-        visited = set()
+        pos = {}
         ans = 0
         n = len(s)
 
         for i in range(n):
-            if s[i] not in visited:
-                right = n - 1
-                while right > i and s[right] != s[i]:
-                    right -= 1
-                visited.add(s[i])
-                ans += len(set(list(s[i + 1:right])))
+            if s[i] not in pos:
+                pos[s[i]] = [i, i]
+                continue
+            pos[s[i]][1] = i
+        
+        for key in pos:
+            left = pos[key][0] + 1
+            right = pos[key][1]
+            ans += len(set(list(s[left:right])))
         
         return ans
