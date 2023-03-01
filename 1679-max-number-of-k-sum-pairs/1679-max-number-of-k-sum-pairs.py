@@ -3,7 +3,6 @@ class Solution:
         ans = 0
         nums.sort()
         count = Counter()
-        print(nums)
         
         for i in range(len(nums)):
             count[nums[i]] += 1
